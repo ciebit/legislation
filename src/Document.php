@@ -11,7 +11,6 @@ abstract class Document
 {
     private DateTime $dateTime;
     private string $description;
-    private array $filesId;
     private string $id;
     private string $slug;
     private Status $status;
@@ -23,12 +22,10 @@ abstract class Document
         Status $status,
         string $slug = '',
         string $description = '',
-        string $id = '',
-        array $filesId = []
+        string $id = ''
     ) {
         $this->dateTime = $dateTime;
         $this->description = $description;
-        $this->setFiles(...$filesId);
         $this->id = $id;
         $this->slug = $slug;
         $this->status = $status;
@@ -43,11 +40,6 @@ abstract class Document
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function getFilesId(): array
-    {
-        return $this->filesId;
     }
 
     public function getId(): string
@@ -68,11 +60,5 @@ abstract class Document
     public function getTitle(): string
     {
         return $this->title;
-    }
-
-    private function setFiles(string ...$ids): self
-    {
-        $this->filesId = $ids;
-        return $this;
     }
 }

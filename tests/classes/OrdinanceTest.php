@@ -23,12 +23,10 @@ class OrdinanceTest extends DocumentTest
             parent::SLUG,
             parent::DESCRIPTION,
             parent::ID,
-            parent::FILES_ID
         );
 
         $this->assertEquals(parent::DATE_TIME, $ordinance->getDateTime()->format('Y-m-d H:i:s'));
         $this->assertEquals(parent::DESCRIPTION, $ordinance->getDescription());
-        $this->assertEquals(parent::FILES_ID, $ordinance->getFilesId());
         $this->assertEquals(parent::ID, $ordinance->getId());
         $this->assertEquals(self::NUMBER, $ordinance->getNumber());
         $this->assertEquals(parent::SLUG, $ordinance->getSlug());

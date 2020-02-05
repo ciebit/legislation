@@ -23,12 +23,10 @@ class DecreeTest extends DocumentTest
             parent::SLUG,
             parent::DESCRIPTION,
             parent::ID,
-            parent::FILES_ID
         );
 
         $this->assertEquals(parent::DATE_TIME, $decree->getDateTime()->format('Y-m-d H:i:s'));
         $this->assertEquals(parent::DESCRIPTION, $decree->getDescription());
-        $this->assertEquals(parent::FILES_ID, $decree->getFilesId());
         $this->assertEquals(parent::ID, $decree->getId());
         $this->assertEquals(self::NUMBER, $decree->getNumber());
         $this->assertEquals(parent::SLUG, $decree->getSlug());

@@ -23,12 +23,10 @@ class LawTest extends DocumentTest
             parent::SLUG,
             parent::DESCRIPTION,
             parent::ID,
-            parent::FILES_ID
         );
 
         $this->assertEquals(parent::DATE_TIME, $law->getDateTime()->format('Y-m-d H:i:s'));
         $this->assertEquals(parent::DESCRIPTION, $law->getDescription());
-        $this->assertEquals(parent::FILES_ID, $law->getFilesId());
         $this->assertEquals(parent::ID, $law->getId());
         $this->assertEquals(self::NUMBER, $law->getNumber());
         $this->assertEquals(parent::SLUG, $law->getSlug());
