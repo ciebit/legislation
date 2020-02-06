@@ -9,6 +9,7 @@ use Ciebit\Legislation\Collection;
 use Ciebit\Legislation\Document;
 use Ciebit\Legislation\DocumentWithNumber;
 use Ciebit\Legislation\Storages\Databases\Sql;
+use Ciebit\Legislation\Storages\Storage;
 use Ciebit\Legislation\Tests\Settings\Database as SettingsDatabase;
 use Ciebit\Legislation\Tests\Data\Document as DocumentData;
 use DateTime;
@@ -19,6 +20,12 @@ use PHPUnit\Framework\TestCase;
 
 class SqlTest extends TestCase
 {
+    private function getStorage(): Storage
+    {
+        $pdo = BuildPdo::build();
+        return new Sql($pdo);
+    }
+
     private function restoreDefaultDatabaseState(): void
     {
         $settings = new SettingsDatabase;
@@ -31,10 +38,22 @@ class SqlTest extends TestCase
         $this->restoreDefaultDatabaseState();
     }
 
+    public function testFind(): void
+    {
+        $storage = $this->getStorage();
+        $collection = DocumentData::getData();
+
+        foreach($collection as $document) {
+            $storage->store($document);
+        }
+
+        $collectionTwo = $storage->find();
+        $this->assertCount($collection->count(), $collectionTwo);        
+    }
+
     public function testStore(): void
     {
-        $pdo = BuildPdo::build();
-        $storage = new Sql($pdo);
+        $storage = $this->getStorage();
         $data = DocumentData::getData();
 
         $id = $storage->store($data->getArrayObject()->offsetGet(0));
