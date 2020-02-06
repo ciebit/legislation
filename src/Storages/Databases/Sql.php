@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace Ciebit\Legislation\Storages\Databases;
 
-use Ciebit\Legislation\Collection;
 use Ciebit\Legislation\Document;
 use Ciebit\Legislation\DocumentWithNumber;
-use Ciebit\Legislation\Storages\Storage;
 use Ciebit\Legislation\Storages\Databases\Database;
-use Ciebit\SqlHelper\Sql as SqlHelper;
-use DateTime;
 use Exception;
 use PDO;
 use PDOStatement;
 
-use function array_map;
-use function count;
-use function intval;
+use function error_log;
 
 class Sql implements Database
 {
@@ -34,17 +28,37 @@ class Sql implements Database
 
     public function __construct(PDO $pdo)
     {
-        $this->table = 'cb_legislation';
+        $this->table = 'cb_legislation_document';
         $this->pdo = $pdo;
     }
 
     private function bindValuesStoreAndUpdate(PDOStatement $statement, Document $document): self
     {
-        $statement->bindValue(':date_time', $document->getDateTime()->format('Y-m-d H:i:s'), PDO::PARAM_STR);
-        $statement->bindValue(':status', $document->getStatus()->getValue(), PDO::PARAM_INT);
-        $statement->bindValue(':title', $document->getTitle(), PDO::PARAM_STR);
-        $statement->bindValue(':slug', $document->getSlug(), PDO::PARAM_STR);
-        $statement->bindValue(':description', $document->getDescription(), PDO::PARAM_STR);
+        $statement->bindValue(
+            ':date_time', 
+            $document->getDateTime()->format('Y-m-d H:i:s'), 
+            PDO::PARAM_STR
+        );
+        $statement->bindValue(
+            ':status', 
+            $document->getStatus()->getValue(), 
+            PDO::PARAM_INT
+        );
+        $statement->bindValue(
+            ':title', 
+            $document->getTitle(), 
+            PDO::PARAM_STR
+        );
+        $statement->bindValue(
+            ':slug', 
+            $document->getSlug(), 
+            PDO::PARAM_STR
+        );
+        $statement->bindValue(
+            ':description', 
+            $document->getDescription(), 
+            PDO::PARAM_STR
+        );
         $statement->bindValue(
             ':number', 
             ($document instanceof DocumentWithNumber) ? $document->getNumber() : 0, 
@@ -83,10 +97,9 @@ class Sql implements Database
 
         $this->bindValuesStoreAndUpdate($statement, $document);
 
-        $this->pdo->beginTransaction();
-
         if ($statement->execute() === false) {
-            throw new Exception('ciebit.legislation.storages.database.sql.store_error', 3);
+            error_log($statement->errorInfo()[2]);
+            throw new Exception('ciebit.legislation.storages.database.sql.store_error', 1);
         }
 
         return $this->pdo->lastInsertId();
