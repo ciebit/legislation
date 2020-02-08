@@ -16,6 +16,7 @@ use Exception;
 use PDO;
 use PDOStatement;
 
+use function array_map;
 use function get_class;
 use function error_log;
 use function sprintf;
@@ -42,6 +43,26 @@ class Sql implements Database
         $this->sqlHelper = new SqlHelper;
         $this->table = 'cb_legislation_document';
         $this->totalItemsOfLastFindWithoutLimitations = 0;
+    }
+
+    private function addFilter(string $fieldName, int $type, string $operator, ...$value): self
+    {
+        $field = "`{$this->table}`.`{$fieldName}`";
+        $this->sqlHelper->addFilterBy($field, $type, $operator, ...$value);
+        return $this;
+    }
+
+    public function addFilterById(string $operator, string ...$ids): self
+    {
+        $ids = array_map('intval', $ids);
+        $this->addFilter(self::COLUMN_ID, PDO::PARAM_INT, $operator, ...$ids);
+        return $this;
+    }
+
+    public function addOrderBy(string $field, string $direction): self
+    {
+        $this->sqlHelper->addOrderBy($field, $direction);
+        return $this;
     }
 
     private function bindValuesStoreAndUpdate(PDOStatement $statement, Document $document): self

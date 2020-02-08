@@ -5,18 +5,13 @@ declare(strict_types=1);
 namespace Ciebit\Legislation\Tests\Storages\Databases;
 
 use Ciebit\Legislation\Tests\Builds\BuildPdo;
-use Ciebit\Legislation\Collection;
-use Ciebit\Legislation\Document;
-use Ciebit\Legislation\DocumentWithNumber;
 use Ciebit\Legislation\Storages\Databases\Sql;
 use Ciebit\Legislation\Storages\Storage;
 use Ciebit\Legislation\Tests\Settings\Database as SettingsDatabase;
 use Ciebit\Legislation\Tests\Data\Document as DocumentData;
-use DateTime;
-use Exception;
-use PDO;
-use PDOStatement;
 use PHPUnit\Framework\TestCase;
+
+use function file_get_contents;
 
 class SqlTest extends TestCase
 {
@@ -31,6 +26,7 @@ class SqlTest extends TestCase
         $settings = new SettingsDatabase;
         $pdo = BuildPdo::build();
         $pdo->exec("TRUNCATE TABLE `{$settings->getDocumentTableName()}`");
+        $pdo->exec(file_get_contents(__DIR__ . '/../../../scripts/sql/dataDefault.sql'));
     }
 
     protected function setUp(): void
@@ -41,14 +37,23 @@ class SqlTest extends TestCase
     public function testFind(): void
     {
         $storage = $this->getStorage();
-        $collection = DocumentData::getData();
+        $collection = $storage->find();
+        $this->assertCount(4, $collection);
+    }
 
-        foreach($collection as $document) {
-            $storage->store($document);
-        }
+    public function testFindById(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->addFilterById('=', '1')->find();
+        $this->assertCount(1, $collection);
+        $this->assertEquals('1', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
 
-        $collectionTwo = $storage->find();
-        $this->assertCount($collection->count(), $collectionTwo);        
+    public function testOrderBy(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->addOrderBy(Storage::FIELD_DATE_TIME, 'DESC')->find();
+        $this->assertEquals('4', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
     public function testStore(): void
