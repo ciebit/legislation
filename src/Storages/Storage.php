@@ -20,6 +20,8 @@ interface Storage
 
     public function addFilterById(string $operation, string ...$id): self;
 
+    public function addFilterBySlug(string $operator, string ...$slug): self;
+
     public function addOrderBy(string $field, string $direction): self;
 
     public function find(): Collection;

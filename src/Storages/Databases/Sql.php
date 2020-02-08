@@ -59,6 +59,12 @@ class Sql implements Database
         return $this;
     }
 
+    public function addFilterBySlug(string $operator, string ...$slug): self
+    {
+        $this->addFilter(self::COLUMN_SLUG, PDO::PARAM_STR, $operator, ...$slug);
+        return $this;
+    }
+
     public function addOrderBy(string $field, string $direction): self
     {
         $this->sqlHelper->addOrderBy($field, $direction);
