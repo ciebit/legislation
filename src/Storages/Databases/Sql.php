@@ -8,18 +8,21 @@ use Ciebit\Legislation\Collection;
 use Ciebit\Legislation\Document;
 use Ciebit\Legislation\DocumentWithNumber;
 use Ciebit\Legislation\Factories\Factory;
+use Ciebit\Legislation\Status;
 use Ciebit\Legislation\Storages\Databases\Database;
 use Ciebit\SqlHelper\Sql as SqlHelper;
+use DateTime;
 use Exception;
 use PDO;
 use PDOStatement;
 
-use function error_log;
 use function get_class;
+use function error_log;
+use function sprintf;
 
 class Sql implements Database
 {
-    private const COLUMN_DATE_TIME = 'dateTime';
+    private const COLUMN_DATE_TIME = 'date_time';
     private const COLUMN_DESCRIPTION = 'description';
     private const COLUMN_ID = 'id';
     private const COLUMN_NUMBER = 'number';
@@ -84,33 +87,50 @@ class Sql implements Database
 
     private function build(array $data): Document
     {
+        $dataStandart = $data;
+        $dataStandart['dateTime'] = new DateTime($data[self::COLUMN_DATE_TIME]);
+        $dataStandart['status'] = new Status((int) $data[self::COLUMN_STATUS]);
+        $dataStandart['number'] = (int) $data[self::COLUMN_NUMBER];
+
         return (new Factory)
-            ->setType($data[self::COLUMN_TYPE])
-            ->setData($data)
+            ->setType($dataStandart[self::COLUMN_TYPE])
+            ->setData($dataStandart)
             ->create();
     }
 
     public function find(): Collection
     {
         $statement = $this->pdo->prepare(
-            "SELECT SQL_CALC_FOUND_ROWS
-                `id`,
-                `date_time` as `dateTime`,
-                `number`,
-                `slug`,
-                `status`,
-                `title`,
-                `type`
-            FROM `{$this->table}`
-            {$this->sqlHelper->generateSqlJoin()}
-            WHERE {$this->sqlHelper->generateSqlFilters()}
-            {$this->sqlHelper->generateSqlOrder()}
-            {$this->sqlHelper->generateSqlLimit()}"
+            sprintf(
+                "SELECT SQL_CALC_FOUND_ROWS
+                    `%s`,
+                    `%s`,
+                    `%s`,
+                    `%s`,
+                    `%s`,
+                    `%s`,
+                    `%s`,
+                    `%s`
+                FROM `{$this->table}`
+                {$this->sqlHelper->generateSqlJoin()}
+                WHERE {$this->sqlHelper->generateSqlFilters()}
+                {$this->sqlHelper->generateSqlOrder()}
+                {$this->sqlHelper->generateSqlLimit()}",
+                self::COLUMN_DATE_TIME,
+                self::COLUMN_DESCRIPTION,
+                self::COLUMN_ID,
+                self::COLUMN_SLUG,
+                self::COLUMN_STATUS,
+                self::COLUMN_NUMBER,
+                self::COLUMN_TITLE,
+                self::COLUMN_TYPE,
+            )
         );
 
         if ($statement === false) {
             throw new Exception('ciebit.legislation.storages.database.sql.sintaxe-error', 2);
         }
+
         /** @var \PDOStatement $statement */
 
         $this->sqlHelper->bind($statement);
