@@ -31,6 +31,9 @@
             "Ciebit\\Legislation\\Tests\\": "tests/classes"
         }
     },
+    "scripts": {
+        "test": "phpunit"
+    },
     "require": {
         "php": "^7.4",
         "myclabs/php-enum": "^1.6.2",
