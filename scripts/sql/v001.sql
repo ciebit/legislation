@@ -19,3 +19,10 @@ CREATE TABLE `cb_legislation_revogation` (
     PRIMARY KEY  (`id`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE `cb_legislation_attachment` ( 
+    `id` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `document_id` INT(5) UNSIGNED NOT NULL,
+    `file_id` INT(5) UNSIGNED NOT NULL,
+    PRIMARY KEY  (`id`)
+) ENGINE = InnoDB;
+

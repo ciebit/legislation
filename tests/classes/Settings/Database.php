@@ -22,6 +22,7 @@ class Database
     {
         $data = 
         $defaultData = [
+            'attachmentTableName' => 'cb_legislation_attachment',
             'charset' => 'utf8',
             'documentTableName' => 'cb_legislation_document',
             'drive' => 'mysql',
@@ -38,6 +39,7 @@ class Database
             $data = array_merge($defaultData, (include $pathFileSettings)['database'] ?? []);
         }
 
+        $this->attachmentTableName = $data['attachmentTableName'];
         $this->charset = $data['charset'];
         $this->documentTableName = $data['documentTableName'];
         $this->drive = $data['drive'];
@@ -47,6 +49,11 @@ class Database
         $this->port = $data['port'];
         $this->revogationTableName = $data['revogationTableName'];
         $this->user = $data['user'];
+    }
+
+    public function getAttachmentTableName(): string
+    {
+        return $this->attachmentTableName;
     }
 
     public function getCharset(): string

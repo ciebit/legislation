@@ -2,6 +2,7 @@
 
 return [
     'database' => [
+        'attachmentTableName' => 'cb_legislation_attachment',
         'charset' => 'utf8',
         'documentTableName' => 'cb_legislation_document',
         'drive' => 'mysql',
