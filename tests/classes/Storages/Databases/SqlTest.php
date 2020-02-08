@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ciebit\Legislation\Tests\Storages\Databases;
 
+use Ciebit\Legislation\Status;
 use Ciebit\Legislation\Tests\Builds\BuildPdo;
 use Ciebit\Legislation\Storages\Databases\Sql;
 use Ciebit\Legislation\Storages\Storage;
@@ -55,6 +56,14 @@ class SqlTest extends TestCase
         $collection = $storage->addFilterBySlug('=', 'decree-2020-234')->find();
         $this->assertCount(1, $collection);
         $this->assertEquals('3', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
+    public function testFindByStatus(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->addFilterByStatus('=', Status::ANALYZE())->find();
+        $this->assertCount(1, $collection);
+        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
     public function testOrderBy(): void

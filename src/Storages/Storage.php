@@ -6,6 +6,7 @@ namespace Ciebit\Legislation\Storages;
 
 use Ciebit\Legislation\Collection;
 use Ciebit\Legislation\Document;
+use Ciebit\Legislation\Status;
 
 interface Storage
 {
@@ -21,6 +22,8 @@ interface Storage
     public function addFilterById(string $operation, string ...$id): self;
 
     public function addFilterBySlug(string $operator, string ...$slug): self;
+
+    public function addFilterByStatus(string $operator, Status ...$status): self;
 
     public function addOrderBy(string $field, string $direction): self;
 

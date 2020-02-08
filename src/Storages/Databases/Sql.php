@@ -65,6 +65,16 @@ class Sql implements Database
         return $this;
     }
 
+    public function addFilterByStatus(string $operator, Status ...$status): self
+    {
+        $statusNumber = array_map(
+            fn($status) => $status->getValue(),
+            $status
+        );
+        $this->addFilter(self::COLUMN_STATUS, PDO::PARAM_INT, $operator, ...$statusNumber);
+        return $this;
+    }
+
     public function addOrderBy(string $field, string $direction): self
     {
         $this->sqlHelper->addOrderBy($field, $direction);
