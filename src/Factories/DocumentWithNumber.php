@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Ciebit\Legislation\Factories;
 
-use Ciebit\Legislation\Factories\Document;
-use Ciebit\Legislation\DocumentWithNumber as DocumentWithNumberEntity;
+use Ciebit\Legislation\Factories\Document as DocumentFactory;
+use Ciebit\Legislation\Document as Document;
 
-abstract class DocumentWithNumber extends Document
+abstract class DocumentWithNumber extends DocumentFactory
 {
     protected int $number;
 
@@ -18,7 +18,7 @@ abstract class DocumentWithNumber extends Document
         return $this;
     }
 
-    public function setDocument(DocumentWithNumberEntity $document): self
+    public function setDocument(Document $document): self
     {
         $this->setData((array) $document);
         return $this;

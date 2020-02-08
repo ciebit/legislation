@@ -7,10 +7,12 @@ namespace Ciebit\Legislation\Factories;
 use Ciebit\Legislation\Document;
 use Ciebit\Legislation\Constitution;
 use Ciebit\Legislation\Decree;
+use Ciebit\Legislation\Factories\Constitution as ConstitutionFactory;
 use Ciebit\Legislation\Factories\Decree as DecreeFactory;
 use Ciebit\Legislation\Factories\Law as LawFactory;
-use Ciebit\Legislation\Factories\Constitution as ConstitutionFactory;
+use Ciebit\Legislation\Factories\Ordinance as OrdinanceFactory;
 use Ciebit\Legislation\Law;
+use Ciebit\Legislation\Ordinance;
 use Exception;
 
 class Factory
@@ -38,6 +40,9 @@ class Factory
                 break;
             case Law::class:
                 $factory = new LawFactory;
+                break;
+            case Ordinance::class:
+                $factory = new OrdinanceFactory;
                 break;
             default:
                 throw new Exception('ciebit.legislation.factories.type-not-found', 3);
