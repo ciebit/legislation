@@ -10,3 +10,12 @@ CREATE TABLE `cb_legislation_document` (
     PRIMARY KEY  (`id`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE `cb_legislation_revogation` ( 
+    `id` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `mode` TINYINT(1) NOT NULL,
+    `revoked_document_id` INT(5) UNSIGNED NOT NULL,
+    `substitute_document_id` INT(5) UNSIGNED NOT NULL,
+    `description` VARCHAR(500) NOT NULL,
+    PRIMARY KEY  (`id`)
+) ENGINE = InnoDB;
+

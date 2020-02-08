@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Tests\Storages\Databases;
+namespace Ciebit\Legislation\Tests\Revogations\Storages\Databases;
 
-use Ciebit\Legislation\Status;
 use Ciebit\Legislation\Tests\Builds\BuildPdo;
-use Ciebit\Legislation\Storages\Databases\Sql;
-use Ciebit\Legislation\Storages\Storage;
+use Ciebit\Legislation\Revogations\Mode;
+use Ciebit\Legislation\Revogations\Revogation;
+use Ciebit\Legislation\Revogations\Storages\Databases\Sql;
+use Ciebit\Legislation\Revogations\Storages\Storage;
 use Ciebit\Legislation\Tests\Settings\Database as SettingsDatabase;
-use Ciebit\Legislation\Tests\Data\Document as DocumentData;
 use PHPUnit\Framework\TestCase;
 
 use function file_get_contents;
@@ -26,8 +26,8 @@ class SqlTest extends TestCase
     {
         $settings = new SettingsDatabase;
         $pdo = BuildPdo::build();
-        $pdo->exec("TRUNCATE TABLE `{$settings->getDocumentTableName()}`");
-        $pdo->exec(file_get_contents(__DIR__ . '/../../../scripts/sql/dataDocumentDefault.sql'));
+        $pdo->exec("TRUNCATE TABLE `{$settings->getRevogationTableName()}`");
+        $pdo->exec(file_get_contents(__DIR__ . '/../../../../scripts/sql/dataRevogationDefault.sql'));
     }
 
     protected function setUp(): void
@@ -39,7 +39,7 @@ class SqlTest extends TestCase
     {
         $storage = $this->getStorage();
         $collection = $storage->find();
-        $this->assertCount(4, $collection);
+        $this->assertCount(2, $collection);
     }
 
     public function testFindById(): void
@@ -50,18 +50,26 @@ class SqlTest extends TestCase
         $this->assertEquals('1', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
-    public function testFindBySlug(): void
+    public function testFindByMode(): void
     {
         $storage = $this->getStorage();
-        $collection = $storage->addFilterBySlug('=', 'decree-2020-234')->find();
+        $collection = $storage->addFilterByMode('=', Mode::INTEGRAL())->find();
         $this->assertCount(1, $collection);
-        $this->assertEquals('3', $collection->getArrayObject()->offsetGet(0)->getId());
+        $this->assertEquals('1', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
-    public function testFindByStatus(): void
+    public function testFindByRevokedDocumentId(): void
     {
         $storage = $this->getStorage();
-        $collection = $storage->addFilterByStatus('=', Status::ANALYZE())->find();
+        $collection = $storage->addFilterByRevokedDocumentId('=', '3')->find();
+        $this->assertCount(1, $collection);
+        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
+    public function testFindBySubstituteDocumentId(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->addFilterBySubstituteDocumentId('=', '4')->find();
         $this->assertCount(1, $collection);
         $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
     }
@@ -69,16 +77,18 @@ class SqlTest extends TestCase
     public function testOrderBy(): void
     {
         $storage = $this->getStorage();
-        $collection = $storage->addOrderBy(Storage::FIELD_DATE_TIME, 'DESC')->find();
-        $this->assertEquals('4', $collection->getArrayObject()->offsetGet(0)->getId());
+        $collection = $storage->addOrderBy(Storage::FIELD_SUBSTITUTE_DOCUMENT_ID, 'DESC')->find();
+        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
     public function testStore(): void
     {
         $storage = $this->getStorage();
-        $data = DocumentData::getData();
+        $revogation = new Revogation(
+            '1', '2', Mode::INTEGRAL(), 'Description 01'
+        );
 
-        $id = $storage->store($data->getArrayObject()->offsetGet(0));
+        $id = $storage->store($revogation);
         $this->assertTrue($id !== '');
     }
 }

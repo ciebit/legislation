@@ -7,8 +7,9 @@ return [
         'drive' => 'mysql',
         'host' => 'localhost',
         'user' => 'root',
+        'name' => 'cb_legislation',
         'password' => '',
         'port' => 3306,
-        'name' => 'cb_legislation',
+        'revogationTableName' => 'cb_legislation_revogation',
     ]
 ];

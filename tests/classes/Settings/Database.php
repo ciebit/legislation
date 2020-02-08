@@ -15,6 +15,7 @@ class Database
     private string $password;
     private int $port;
     private string $name;
+    private string $revogationTableName;
     private string $user;
 
     public function __construct()
@@ -28,6 +29,7 @@ class Database
             'name' => 'cb_legislation',
             'password' => '',
             'port' => 3306,
+            'revogationTableName' => 'cb_legislation_revogation',
             'user' => 'root',
         ];
         $pathFileSettings = realpath(__DIR__.'/../../settings.php');
@@ -43,6 +45,7 @@ class Database
         $this->name = $data['name'];
         $this->password = $data['password'];
         $this->port = $data['port'];
+        $this->revogationTableName = $data['revogationTableName'];
         $this->user = $data['user'];
     }
 
@@ -79,6 +82,11 @@ class Database
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getRevogationTableName(): string
+    {
+        return $this->revogationTableName;
     }
 
     public function getUser(): string
