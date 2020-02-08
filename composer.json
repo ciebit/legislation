@@ -1,0 +1,46 @@
+{
+    "name": "ciebit/legislation",
+    "description": "Módulo de representação de Leis, Decretos e Portarias",
+    "keywords": [
+        "decretos",
+        "legislação",
+        "leis",
+        "portarias"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/ciebit/legislation/issues",
+        "source": "https://github.com/ciebit/legislation"
+    },
+    "authors": [
+        {
+            "name": "Johnny Saymon",
+            "email": "saymon@ciebit.com",
+            "homepage": "https://saymon.ciebit.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ciebit\\Legislation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ciebit\\Legislation\\Tests\\": "tests/classes"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "require": {
+        "php": "^7.4",
+        "myclabs/php-enum": "^1.6.2",
+        "ciebit/sql-helper": "^1.0.0"
+    },
+    "require-dev": {
+        "php": "^7.4",
+        "phpunit/phpunit": "^8.0"
+    }
+}
