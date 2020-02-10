@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Storages\Databases;
+namespace Ciebit\Legislation\Documents\Storages\Databases;
 
-use Ciebit\Legislation\Collection;
-use Ciebit\Legislation\Document;
-use Ciebit\Legislation\DocumentWithNumber;
-use Ciebit\Legislation\Factories\Factory;
-use Ciebit\Legislation\Status;
-use Ciebit\Legislation\Storages\Databases\Database;
+use Ciebit\Legislation\Documents\Collection;
+use Ciebit\Legislation\Documents\Document;
+use Ciebit\Legislation\Documents\DocumentWithNumber;
+use Ciebit\Legislation\Documents\Factories\Factory;
+use Ciebit\Legislation\Documents\Status;
+use Ciebit\Legislation\Documents\Storages\Databases\Database;
 use Ciebit\SqlHelper\Sql as SqlHelper;
 use DateTime;
 use Exception;
@@ -115,7 +115,7 @@ class Sql implements Database
         );
         $statement->bindValue(
             ':type',
-            get_class($document),
+            $document::getType(),
             PDO::PARAM_STR
         );
 

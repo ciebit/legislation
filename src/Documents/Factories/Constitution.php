@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Factories;
+namespace Ciebit\Legislation\Documents\Factories;
 
-use Ciebit\Legislation\Constitution as ConstitutionEntity;
-use Ciebit\Legislation\Document as DocumentEntity;
-use Ciebit\Legislation\Factories\Document;
-use Ciebit\Legislation\Status;
+use Ciebit\Legislation\Documents\Constitution as ConstitutionEntity;
+use Ciebit\Legislation\Documents\Document as DocumentEntity;
+use Ciebit\Legislation\Documents\Factories\Document;
+use Ciebit\Legislation\Documents\Status;
 use DateTime;
 
 class Constitution extends Document

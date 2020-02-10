@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Tests;
+namespace Ciebit\Legislation\Tests\Documents;
 
-use Ciebit\Legislation\Constitution;
-use Ciebit\Legislation\Status;
-use Ciebit\Legislation\Tests\Document as DocumentTest;
+use Ciebit\Legislation\Documents\Constitution;
+use Ciebit\Legislation\Documents\Status;
+use Ciebit\Legislation\Tests\Documents\Document as DocumentTest;
 use DateTime;
 use TypeError;
 

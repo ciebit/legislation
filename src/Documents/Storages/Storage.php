@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Storages;
+namespace Ciebit\Legislation\Documents\Storages;
 
-use Ciebit\Legislation\Collection;
-use Ciebit\Legislation\Document;
-use Ciebit\Legislation\Status;
+use Ciebit\Legislation\Documents\Collection;
+use Ciebit\Legislation\Documents\Document;
+use Ciebit\Legislation\Documents\Status;
 
 interface Storage
 {

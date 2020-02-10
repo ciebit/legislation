@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Ciebit\Legislation\Tests\Storages\Databases;
 
-use Ciebit\Legislation\Status;
+use Ciebit\Legislation\Documents\Status;
+use Ciebit\Legislation\Documents\Storages\Databases\Sql;
+use Ciebit\Legislation\Documents\Storages\Storage;
 use Ciebit\Legislation\Tests\Builds\BuildPdo;
-use Ciebit\Legislation\Storages\Databases\Sql;
-use Ciebit\Legislation\Storages\Storage;
-use Ciebit\Legislation\Tests\Settings\Database as SettingsDatabase;
 use Ciebit\Legislation\Tests\Data\Document as DocumentData;
+use Ciebit\Legislation\Tests\Settings\Database as SettingsDatabase;
 use PHPUnit\Framework\TestCase;
 
 use function file_get_contents;

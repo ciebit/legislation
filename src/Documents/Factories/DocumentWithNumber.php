@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Factories;
+namespace Ciebit\Legislation\Documents\Factories;
 
-use Ciebit\Legislation\Factories\Document as DocumentFactory;
-use Ciebit\Legislation\Document as Document;
+use Ciebit\Legislation\Documents\Document as Document;
+use Ciebit\Legislation\Documents\Factories\Document as DocumentFactory;
 
 abstract class DocumentWithNumber extends DocumentFactory
 {

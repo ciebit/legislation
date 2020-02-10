@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Factories;
+namespace Ciebit\Legislation\Documents\Factories;
 
-use Ciebit\Legislation\Document;
-use Ciebit\Legislation\Constitution;
-use Ciebit\Legislation\Decree;
-use Ciebit\Legislation\Factories\Constitution as ConstitutionFactory;
-use Ciebit\Legislation\Factories\Decree as DecreeFactory;
-use Ciebit\Legislation\Factories\Law as LawFactory;
-use Ciebit\Legislation\Factories\Ordinance as OrdinanceFactory;
-use Ciebit\Legislation\Law;
-use Ciebit\Legislation\Ordinance;
+use Ciebit\Legislation\Documents\Document;
+use Ciebit\Legislation\Documents\Constitution;
+use Ciebit\Legislation\Documents\Decree;
+use Ciebit\Legislation\Documents\Factories\Constitution as ConstitutionFactory;
+use Ciebit\Legislation\Documents\Factories\Decree as DecreeFactory;
+use Ciebit\Legislation\Documents\Factories\Law as LawFactory;
+use Ciebit\Legislation\Documents\Factories\Ordinance as OrdinanceFactory;
+use Ciebit\Legislation\Documents\Law;
+use Ciebit\Legislation\Documents\Ordinance;
 use Exception;
 
 class Factory
@@ -32,20 +32,20 @@ class Factory
     {
         switch($this->type) 
         {
-            case Constitution::class:
+            case Constitution::getType():
                 $factory = new ConstitutionFactory;
                 break;
-            case Decree::class:
+            case Decree::getType():
                 $factory = new DecreeFactory;
                 break;
-            case Law::class:
+            case Law::getType():
                 $factory = new LawFactory;
                 break;
-            case Ordinance::class:
+            case Ordinance::getType():
                 $factory = new OrdinanceFactory;
                 break;
             default:
-                throw new Exception('ciebit.legislation.factories.type-not-found', 3);
+                throw new Exception('ciebit.legislation.documents.factories.type-not-found', 3);
         }
 
         if ($this->document instanceof Document) {

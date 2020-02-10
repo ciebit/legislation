@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Factories;
+namespace Ciebit\Legislation\Documents\Factories;
 
-use Ciebit\Legislation\Document as DocumentEntity;
-use Ciebit\Legislation\Status;
+use Ciebit\Legislation\Documents\Document as DocumentEntity;
+use Ciebit\Legislation\Documents\Status;
 use DateTime;
 
 abstract class Document

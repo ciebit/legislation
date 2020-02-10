@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation;
+namespace Ciebit\Legislation\Documents;
 
 use ArrayIterator;
 use ArrayObject;
-use Ciebit\Legislation\Document;
+use Ciebit\Legislation\Documents\Document;
 use Countable;
 use Exception;
 use IteratorAggregate;

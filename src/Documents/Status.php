@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation;
+namespace Ciebit\Legislation\Documents;
 
 use MyCLabs\Enum\Enum;
 

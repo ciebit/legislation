@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Factories;
+namespace Ciebit\Legislation\Documents\Factories;
 
-use Ciebit\Legislation\Factories\DocumentWithNumber;
-use Ciebit\Legislation\Law as LawEntity;
-use Ciebit\Legislation\Status;
+use Ciebit\Legislation\Documents\Factories\DocumentWithNumber;
+use Ciebit\Legislation\Documents\Ordinance as OrdinanceEntity;
+use Ciebit\Legislation\Documents\Status;
 use DateTime;
 
-class Law extends DocumentWithNumber
+class Ordinance extends DocumentWithNumber
 {
     public function __construct()
     {
@@ -22,9 +22,9 @@ class Law extends DocumentWithNumber
         $this->title = '';
     }
 
-    public function create(): LawEntity
+    public function create(): OrdinanceEntity
     {
-        return new LawEntity(
+        return new OrdinanceEntity(
             $this->title,
             $this->dateTime,
             $this->status,

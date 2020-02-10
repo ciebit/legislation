@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Ciebit\Legislation\Tests\Data;
 
-use Ciebit\Legislation\Collection;
-use Ciebit\Legislation\Constitution;
-use Ciebit\Legislation\Decree;
-use Ciebit\Legislation\Law;
-use Ciebit\Legislation\Ordinance;
-use Ciebit\Legislation\Status;
+use Ciebit\Legislation\Documents\Collection;
+use Ciebit\Legislation\Documents\Constitution;
+use Ciebit\Legislation\Documents\Decree;
+use Ciebit\Legislation\Documents\Law;
+use Ciebit\Legislation\Documents\Ordinance;
+use Ciebit\Legislation\Documents\Status;
 use DateTime;
 
 class Document

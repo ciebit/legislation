@@ -2,21 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation;
+namespace Ciebit\Legislation\Documents;
 
-use Ciebit\Legislation\Document;
-use Ciebit\Legislation\Status;
+use Ciebit\Legislation\Documents\Status;
+use Ciebit\Legislation\Documents\Document;
 use DateTime;
 
-abstract class DocumentWithNumber extends Document
+class Constitution extends Document
 {
-    private int $number;
-
     public function __construct(
         string $title,
         DateTime $dateTime,
         Status $status,
-        int $number,
         string $slug = '',
         string $description = '',
         string $id = ''
@@ -29,12 +26,10 @@ abstract class DocumentWithNumber extends Document
             $description,
             $id,
         );
-
-        $this->number = $number;
     }
 
-    public function getNumber(): int
+    public static function getType(): string
     {
-        return $this->number;
+        return 'constitution';
     }
 }

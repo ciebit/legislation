@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Tests;
+namespace Ciebit\Legislation\Tests\Documents;
 
 use PHPUnit\Framework\TestCase;
 
-class Document extends TestCase
+abstract class Document extends TestCase
 {
     protected const DATE_TIME = '2020-02-05 15:31:22';
     protected const DESCRIPTION = 'Description Example';

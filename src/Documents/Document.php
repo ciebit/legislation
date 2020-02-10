@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation;
+namespace Ciebit\Legislation\Documents;
 
-use Ciebit\Legislation\Status;
+use Ciebit\Legislation\Documents\Status;
 use DateTime;
 
 abstract class Document
@@ -61,4 +61,6 @@ abstract class Document
     {
         return $this->title;
     }
+
+    abstract public static function getType(): string;
 }

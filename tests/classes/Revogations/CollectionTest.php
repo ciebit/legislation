@@ -7,9 +7,9 @@ namespace Ciebit\Legislation\Tests\Revogations;
 use Ciebit\Legislation\Revogations\Collection;
 use Ciebit\Legislation\Revogations\Revogation;
 use Ciebit\Legislation\Revogations\Mode;
-use Ciebit\Legislation\Tests\Document as DocumentTest;
+use PHPUnit\Framework\TestCase;
 
-class CollectionTest extends DocumentTest
+class CollectionTest extends TestCase
 {
     public function testCreate(): void
     {
