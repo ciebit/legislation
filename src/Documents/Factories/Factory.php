@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Ciebit\Legislation\Documents\Factories;
 
-use Ciebit\Legislation\Documents\Document;
 use Ciebit\Legislation\Documents\Constitution;
+use Ciebit\Legislation\Documents\Bill;
 use Ciebit\Legislation\Documents\Decree;
+use Ciebit\Legislation\Documents\Document;
+use Ciebit\Legislation\Documents\Factories\Bill as BillFactory;
 use Ciebit\Legislation\Documents\Factories\Constitution as ConstitutionFactory;
 use Ciebit\Legislation\Documents\Factories\Decree as DecreeFactory;
 use Ciebit\Legislation\Documents\Factories\Law as LawFactory;
@@ -32,6 +34,9 @@ class Factory
     {
         switch($this->type) 
         {
+            case Bill::getType():
+                $factory = new BillFactory;
+                break;
             case Constitution::getType():
                 $factory = new ConstitutionFactory;
                 break;

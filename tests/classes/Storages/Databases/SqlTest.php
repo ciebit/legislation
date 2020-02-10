@@ -39,7 +39,7 @@ class SqlTest extends TestCase
     {
         $storage = $this->getStorage();
         $collection = $storage->find();
-        $this->assertCount(4, $collection);
+        $this->assertCount(5, $collection);
     }
 
     public function testFindById(): void
@@ -70,7 +70,7 @@ class SqlTest extends TestCase
     {
         $storage = $this->getStorage();
         $collection = $storage->addOrderBy(Storage::FIELD_DATE_TIME, 'DESC')->find();
-        $this->assertEquals('4', $collection->getArrayObject()->offsetGet(0)->getId());
+        $this->assertEquals('5', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
     public function testStore(): void
