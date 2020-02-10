@@ -11,6 +11,12 @@ abstract class DocumentWithNumber extends DocumentFactory
 {
     protected int $number;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->number = 0;
+    }
+
     public function setData(array $data): self
     {
         parent::setData($data);

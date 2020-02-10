@@ -24,6 +24,7 @@ class CollectionTest extends DocumentTest
                 123,
                 'title-123',
                 'description',
+                ['22', '33'],
                 '1',
             ),
             new Constitution(
@@ -32,6 +33,7 @@ class CollectionTest extends DocumentTest
                 Status::ACTIVE(),
                 'title-123',
                 'description',
+                ['44', '55'],
                 '2',
             ),
         );

@@ -15,22 +15,24 @@ class BillTest extends DocumentTest
 
     public function testCreate(): void
     {
-        $law = new Bill(
+        $bill = new Bill(
             parent::TITLE,
             new DateTime(parent::DATE_TIME),
             new Status(parent::STATUS),
             self::NUMBER,
             parent::SLUG,
             parent::DESCRIPTION,
+            parent::LABELS_IS,
             parent::ID,
         );
 
-        $this->assertEquals(parent::DATE_TIME, $law->getDateTime()->format('Y-m-d H:i:s'));
-        $this->assertEquals(parent::DESCRIPTION, $law->getDescription());
-        $this->assertEquals(parent::ID, $law->getId());
-        $this->assertEquals(self::NUMBER, $law->getNumber());
-        $this->assertEquals(parent::SLUG, $law->getSlug());
-        $this->assertEquals(parent::STATUS, $law->getStatus()->getValue());
-        $this->assertEquals(parent::TITLE, $law->getTitle());
+        $this->assertEquals(parent::DATE_TIME, $bill->getDateTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals(parent::DESCRIPTION, $bill->getDescription());
+        $this->assertEquals(parent::ID, $bill->getId());
+        $this->assertEquals(parent::LABELS_IS, $bill->getLabelsId());
+        $this->assertEquals(self::NUMBER, $bill->getNumber());
+        $this->assertEquals(parent::SLUG, $bill->getSlug());
+        $this->assertEquals(parent::STATUS, $bill->getStatus()->getValue());
+        $this->assertEquals(parent::TITLE, $bill->getTitle());
     }
 }

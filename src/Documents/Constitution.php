@@ -16,6 +16,7 @@ class Constitution extends Document
         Status $status,
         string $slug = '',
         string $description = '',
+        array $labelsId = [],
         string $id = ''
     ) {
         parent::__construct(
@@ -24,6 +25,7 @@ class Constitution extends Document
             $status,
             $slug,
             $description,
+            $labelsId,
             $id,
         );
     }

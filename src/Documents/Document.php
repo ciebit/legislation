@@ -12,6 +12,7 @@ abstract class Document
     private DateTime $dateTime;
     private string $description;
     private string $id;
+    private array $labelsId;
     private string $slug;
     private Status $status;
     private string $title;
@@ -22,6 +23,7 @@ abstract class Document
         Status $status,
         string $slug = '',
         string $description = '',
+        array $labelsId = [],
         string $id = ''
     ) {
         $this->dateTime = $dateTime;
@@ -30,6 +32,8 @@ abstract class Document
         $this->slug = $slug;
         $this->status = $status;
         $this->title = $title;
+
+        $this->setLabelsId(...$labelsId);
     }
 
     public function getDateTime(): DateTime
@@ -45,6 +49,11 @@ abstract class Document
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getLabelsId(): array
+    {
+        return $this->labelsId;
     }
 
     public function getSlug(): string
@@ -63,4 +72,10 @@ abstract class Document
     }
 
     abstract public static function getType(): string;
+
+    private function setLabelsId(string ...$ids): self
+    {
+        $this->labelsId = $ids;
+        return $this;
+    }
 }

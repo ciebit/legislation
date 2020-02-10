@@ -7,21 +7,9 @@ namespace Ciebit\Legislation\Documents\Factories;
 use Ciebit\Legislation\Documents\Constitution as ConstitutionEntity;
 use Ciebit\Legislation\Documents\Document as DocumentEntity;
 use Ciebit\Legislation\Documents\Factories\Document;
-use Ciebit\Legislation\Documents\Status;
-use DateTime;
 
 class Constitution extends Document
 {
-    public function __construct()
-    {
-        $this->dateTime = new DateTime;
-        $this->description = '';
-        $this->id = '';
-        $this->slug = '';
-        $this->status = Status::DRAFT();
-        $this->title = '';
-    }
-
     public function create(): DocumentEntity
     {
         return new ConstitutionEntity(
@@ -30,6 +18,7 @@ class Constitution extends Document
             $this->status,
             $this->slug,
             $this->description,
+            $this->labelsId,
             $this->id
         );
     }

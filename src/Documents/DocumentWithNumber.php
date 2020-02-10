@@ -19,6 +19,7 @@ abstract class DocumentWithNumber extends Document
         int $number,
         string $slug = '',
         string $description = '',
+        array $labelsId = [],
         string $id = ''
     ) {
         parent::__construct(
@@ -27,6 +28,7 @@ abstract class DocumentWithNumber extends Document
             $status,
             $slug,
             $description,
+            $labelsId,
             $id,
         );
 

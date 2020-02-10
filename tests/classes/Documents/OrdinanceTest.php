@@ -22,12 +22,14 @@ class OrdinanceTest extends DocumentTest
             self::NUMBER,
             parent::SLUG,
             parent::DESCRIPTION,
+            parent::LABELS_IS,
             parent::ID,
         );
 
         $this->assertEquals(parent::DATE_TIME, $ordinance->getDateTime()->format('Y-m-d H:i:s'));
         $this->assertEquals(parent::DESCRIPTION, $ordinance->getDescription());
         $this->assertEquals(parent::ID, $ordinance->getId());
+        $this->assertEquals(parent::LABELS_IS, $ordinance->getLabelsId());
         $this->assertEquals(self::NUMBER, $ordinance->getNumber());
         $this->assertEquals(parent::SLUG, $ordinance->getSlug());
         $this->assertEquals(parent::STATUS, $ordinance->getStatus()->getValue());

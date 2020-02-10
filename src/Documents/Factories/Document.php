@@ -13,20 +13,34 @@ abstract class Document
     protected DateTime $dateTime;
     protected string $description;
     protected string $id;
+    protected array $labelsId;
     protected string $slug;
     protected Status $status;
     protected string $title;
+
+    public function __construct()
+    {
+        $this->dateTime = new DateTime;
+        $this->description = '';
+        $this->id = '';
+        $this->labelsId = [];
+        $this->slug = '';
+        $this->status = Status::DRAFT();
+        $this->title = '';
+    }
 
     abstract public function create(): DocumentEntity;
 
     public function setData(array $data): self
     {
-        $data['dateTime'] && $this->setDateTime($data['dateTime']);
-        $data['description'] && $this->setDescription($data['description']);
-        $data['id'] && $this->setId($data['id']);
-        $data['slug'] && $this->setSlug($data['slug']);
-        $data['status'] && $this->setStatus($data['status']);
-        $data['title'] && $this->setTitle($data['title']);
+        isset($data['dateTime']) && $this->setDateTime($data['dateTime']);
+        isset($data['description']) && $this->setDescription($data['description']);
+        isset($data['id']) && $this->setId($data['id']);
+        isset($data['labelsId']) && $this->setLabelsId(...$data['labelsId']);
+        isset($data['slug']) && $this->setSlug($data['slug']);
+        isset($data['status']) && $this->setStatus($data['status']);
+        isset($data['title']) && $this->setTitle($data['title']);
+        
         return $this;
     }
 
@@ -47,6 +61,12 @@ abstract class Document
     public function setId(string $value): self
     {
         $this->id = $value;
+        return $this;
+    }
+
+    public function setLabelsId(string ...$ids): self
+    {
+        $this->labelsId = $ids;
         return $this;
     }
 
