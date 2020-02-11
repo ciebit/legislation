@@ -28,7 +28,8 @@ class Document
                 new DateTime('2019-01-02'),
                 Status::ACTIVE(),
                 'constitution-2019',
-                'Description Constitution 2019'
+                'Description Constitution 2019',
+                ['222', '333', '444']
             ),
             new Law(
                 'Law 1.234/2020',
@@ -44,7 +45,8 @@ class Document
                 Status::DRAFT(),
                 234,
                 'decree-2020-234',
-                'Description Decree 234/2020'
+                'Description Decree 234/2020',
+                ['555']
             ),
             new Ordinance(
                 'Ordinance 55/2020',
@@ -52,7 +54,8 @@ class Document
                 Status::DRAFT(),
                 55,
                 'ordinance-2020-55',
-                'Description Ordinance 234/2020'
+                'Description Ordinance 234/2020',
+                ['9', '48456']
             ),
         );
     }

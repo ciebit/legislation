@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Legislation\Tests\Storages\Databases;
+namespace Ciebit\Legislation\Tests\Documents\Storages\Databases;
 
 use Ciebit\Legislation\Documents\Status;
 use Ciebit\Legislation\Documents\Storages\Databases\Sql;
@@ -13,6 +13,7 @@ use Ciebit\Legislation\Tests\Settings\Database as SettingsDatabase;
 use PHPUnit\Framework\TestCase;
 
 use function file_get_contents;
+use function realpath;
 
 class SqlTest extends TestCase
 {
@@ -27,7 +28,14 @@ class SqlTest extends TestCase
         $settings = new SettingsDatabase;
         $pdo = BuildPdo::build();
         $pdo->exec("TRUNCATE TABLE `{$settings->getDocumentTableName()}`");
-        $pdo->exec(file_get_contents(__DIR__ . '/../../../scripts/sql/dataDocumentDefault.sql'));
+        $pdo->exec("TRUNCATE TABLE `{$settings->getAttachmentTableName()}`");
+        $pdo->exec("TRUNCATE TABLE `{$settings->getLabelTableName()}`");
+        $pdo->exec("TRUNCATE TABLE `{$settings->getRevogationTableName()}`");
+        $pathScriptsSql = realpath(__DIR__ . '/../../../../scripts/sql');
+        $pdo->exec(file_get_contents($pathScriptsSql . '/dataDocumentDefault.sql'));
+        $pdo->exec(file_get_contents($pathScriptsSql . '/dataAttachmentDefault.sql'));
+        $pdo->exec(file_get_contents($pathScriptsSql . '/dataLabelDefault.sql'));
+        $pdo->exec(file_get_contents($pathScriptsSql . '/dataRevogationDefault.sql'));
     }
 
     protected function setUp(): void
@@ -66,7 +74,44 @@ class SqlTest extends TestCase
         $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
-    public function testOrderBy(): void
+    public function testFindIntegrity(): void
+    {
+        $storage = $this->getStorage();
+        $law = $storage
+            ->addFilterById('=', '2')
+            ->find()
+            ->getArrayObject()
+            ->offsetGet(0);
+
+        $this->assertEquals('2', $law->getId());
+        $this->assertEquals('Law 1.234/2020', $law->getTitle());
+        $this->assertEquals('Description Law 1.234/2020', $law->getDescription());
+        $this->assertEquals('2019-05-06 00:00:00', $law->getDateTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('law-2020-1234', $law->getSlug());
+        $this->assertEquals(1234, $law->getNumber());
+        $this->assertEquals(2, $law->getStatus()->getValue());
+        $this->assertEquals(['333','444'], $law->getLabelsId());
+    }
+
+    public function testFindWithLimit(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->setLimit(2)->find();
+        $this->assertCount(2, $collection);
+    }
+
+    public function testFindWithOffsetAndLimit(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage
+            ->setLimit(2)
+            ->setOffset(2)
+            ->find();
+        $this->assertCount(2, $collection);
+        $this->assertEquals('3', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
+    public function testFindWithOrderBy(): void
     {
         $storage = $this->getStorage();
         $collection = $storage->addOrderBy(Storage::FIELD_DATE_TIME, 'DESC')->find();

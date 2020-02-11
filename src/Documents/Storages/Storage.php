@@ -31,6 +31,10 @@ interface Storage
 
     public function getTotalItemsOfLastFindWithoutLimit(): int;
 
+    public function setLimit(int $limit): self;
+
+    public function setOffset(int $offset): self;
+
     /** @return string ID */
     public function store(Document $document): string;
 }

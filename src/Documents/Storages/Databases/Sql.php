@@ -17,15 +17,18 @@ use PDO;
 use PDOStatement;
 
 use function array_map;
-use function get_class;
 use function error_log;
 use function sprintf;
 
 class Sql implements Database
 {
+    private const COLUMN_ASSOCIATION_LABELS_DOCUMENT_ID = 'document_id';
+    private const COLUMN_ASSOCIATION_LABELS_ID = 'id';
+    private const COLUMN_ASSOCIATION_LABELS_LABEL_ID = 'label_id';
     private const COLUMN_DATE_TIME = 'date_time';
     private const COLUMN_DESCRIPTION = 'description';
     private const COLUMN_ID = 'id';
+    private const COLUMN_LABELS_ID = 'labels_id';
     private const COLUMN_NUMBER = 'number';
     private const COLUMN_SLUG = 'slug';
     private const COLUMN_STATUS = 'status';
@@ -35,6 +38,7 @@ class Sql implements Database
     private PDO $pdo;
     private SqlHelper $sqlHelper;
     private string $table;
+    private string $tableLabelAssociation;
     private int $totalItemsOfLastFindWithoutLimitations;
 
     public function __construct(PDO $pdo)
@@ -42,6 +46,7 @@ class Sql implements Database
         $this->pdo = $pdo;
         $this->sqlHelper = new SqlHelper;
         $this->table = 'cb_legislation_document';
+        $this->tableLabelAssociation = 'cb_legislation_label';
         $this->totalItemsOfLastFindWithoutLimitations = 0;
     }
 
@@ -128,6 +133,9 @@ class Sql implements Database
         $dataStandart['dateTime'] = new DateTime($data[self::COLUMN_DATE_TIME]);
         $dataStandart['status'] = new Status((int) $data[self::COLUMN_STATUS]);
         $dataStandart['number'] = (int) $data[self::COLUMN_NUMBER];
+        $dataStandart['labelsId'] = $data[self::COLUMN_LABELS_ID] 
+            ? explode(',', $data[self::COLUMN_LABELS_ID]) 
+            : [];
 
         return (new Factory)
             ->setType($dataStandart[self::COLUMN_TYPE])
@@ -140,14 +148,14 @@ class Sql implements Database
         $statement = $this->pdo->prepare(
             sprintf(
                 "SELECT SQL_CALC_FOUND_ROWS
-                    `%s`,
-                    `%s`,
-                    `%s`,
-                    `%s`,
-                    `%s`,
-                    `%s`,
-                    `%s`,
-                    `%s`
+                    `%s`, `%s`, `%s`,
+                    `%s`, `%s`, `%s`,
+                    `%s`, `%s`,
+                    (
+                        SELECT GROUP_CONCAT(`{$this->tableLabelAssociation}`.`%s`)
+                        FROM  `{$this->tableLabelAssociation}`
+                        WHERE `{$this->tableLabelAssociation}`.`%s` = `{$this->table}`.`%s`
+                    )  as `%s`
                 FROM `{$this->table}`
                 {$this->sqlHelper->generateSqlJoin()}
                 WHERE {$this->sqlHelper->generateSqlFilters()}
@@ -161,6 +169,10 @@ class Sql implements Database
                 self::COLUMN_NUMBER,
                 self::COLUMN_TITLE,
                 self::COLUMN_TYPE,
+                self::COLUMN_ASSOCIATION_LABELS_LABEL_ID,
+                self::COLUMN_ASSOCIATION_LABELS_DOCUMENT_ID,
+                self::COLUMN_ID,
+                self::COLUMN_LABELS_ID,
             )
         );
 
@@ -195,9 +207,27 @@ class Sql implements Database
         return $this->totalItemsOfLastFindWithoutLimitations;
     }
 
+    public function setLimit(int $limit): self
+    {
+        $this->sqlHelper->setLimit($limit);
+        return $this;
+    }
+    
+    public function setOffset(int $offset): self
+    {
+        $this->sqlHelper->setOffset($offset);
+        return $this;
+    }
+
     public function setTable(string $name): self
     {
         $this->table = $name;
+        return $this;
+    }
+
+    public function setTableLabelAssociation(string $name): self
+    {
+        $this->tableLabelAssociation = $name;
         return $this;
     }
 
@@ -225,14 +255,54 @@ class Sql implements Database
 
         $this->bindValuesStoreAndUpdate($statement, $document);
 
+        $this->pdo->beginTransaction();
+
         if ($statement->execute() === false) {
             error_log($statement->errorInfo()[2]);
             throw new Exception('ciebit.legislation.storages.database.sql.store_error', 1);
         }
 
-        return $this->pdo->lastInsertId();
+        $id = $this->pdo->lastInsertId();
+        if (count($document->getLabelsId()) > 0) {
+            $this->storeLabelsId($id, ...$document->getLabelsId());
+        }
+
+        $this->pdo->commit();
+
+        return $id;
     }
 
+    private function storeLabelsId(string $documentId, string ...$labelsId): bool
+    {
+        $fields = implode('`,`', [
+            self::COLUMN_ASSOCIATION_LABELS_DOCUMENT_ID,
+            self::COLUMN_ASSOCIATION_LABELS_LABEL_ID,
+        ]);
+
+        $values = [];
+
+        foreach ($labelsId as $key => $labelId) {
+            $values[] = "(:documentId, :labelId{$key})";
+        }
+
+        $statement = $this->pdo->prepare(
+            "INSERT INTO {$this->tableLabelAssociation} (`{$fields}`) 
+            VALUES " . implode(',', $values)
+        );
+
+        $statement->bindValue(':documentId', $documentId, PDO::PARAM_INT);
+
+        foreach ($labelsId as $key => $labelId) {
+            $statement->bindValue(":labelId{$key}", $labelId, PDO::PARAM_INT);
+        }
+
+        if ($statement->execute() === false) {
+            error_log($statement->errorInfo()[2]);
+            throw new Exception('ciebit.legislation.documents.storages.database.store-labels-error', 4);
+        }
+
+        return true;
+    }
 
     private function updateTotalItemsWithoutFilters(): self
     {
