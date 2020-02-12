@@ -64,6 +64,23 @@ class Sql implements Database
         return $this;
     }
 
+    public function addFilterByLabelsId(string $operator, string ...$id): self
+    {
+        $fieldDocumentId = '`' . self::COLUMN_ASSOCIATION_LABELS_DOCUMENT_ID . '`';
+        $fieldId = '`' . self::COLUMN_ID . '`';
+        $fieldLabelId = '`' . self::COLUMN_ASSOCIATION_LABELS_LABEL_ID . '`';
+        $tableAssociation = "`{$this->tableLabelAssociation}`";
+
+        $ids = array_map('intval', $id);
+        $this->sqlHelper->addFilterBy("{$tableAssociation}.{$fieldLabelId}", PDO::PARAM_INT, $operator, ...$ids);
+        $this->sqlHelper->addSqlJoin(
+            "INNER JOIN {$this->tableLabelAssociation}
+            ON {$this->tableLabelAssociation}.{$fieldDocumentId} = `{$this->table}`.{$fieldId}"
+        );
+
+        return $this;
+    }
+
     public function addFilterBySearch(string ...$search): self
     {
         $fieldTitle = self::COLUMN_TITLE;
@@ -178,9 +195,14 @@ class Sql implements Database
         $statement = $this->pdo->prepare(
             sprintf(
                 "SELECT SQL_CALC_FOUND_ROWS
-                    `%s`, `%s`, `%s`,
-                    `%s`, `%s`, `%s`,
-                    `%s`, `%s`,
+                    `{$this->table}`.`%s`, 
+                    `{$this->table}`.`%s`, 
+                    `{$this->table}`.`%s`,
+                    `{$this->table}`.`%s`, 
+                    `{$this->table}`.`%s`, 
+                    `{$this->table}`.`%s`,
+                    `{$this->table}`.`%s`,
+                    `{$this->table}`.`%s`,
                     (
                         SELECT GROUP_CONCAT(`{$this->tableLabelAssociation}`.`%s`)
                         FROM  `{$this->tableLabelAssociation}`

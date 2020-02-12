@@ -21,11 +21,13 @@ interface Storage
 
     public function addFilterById(string $operation, string ...$id): self;
 
+    public function addFilterByLabelsId(string $operator, string ...$id): self;
+
     public function addFilterBySlug(string $operator, string ...$slug): self;
 
-    public function addFilterByStatus(string $operator, Status ...$status): self;
-
     public function addFilterBySearch(string ...$search): self;
+
+    public function addFilterByStatus(string $operator, Status ...$status): self;
 
     public function addOrderBy(string $field, string $direction): self;
 

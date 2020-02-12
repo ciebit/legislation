@@ -58,6 +58,15 @@ class SqlTest extends TestCase
         $this->assertEquals('1', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
+    public function testFindByLabelsId(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->addFilterByLabelsId('=', '22', '333')->find();
+        $this->assertCount(2, $collection);
+        $this->assertTrue($collection->hasWithId('1'));
+        $this->assertTrue($collection->hasWithId('2'));
+    }
+
     public function testFindBySearch(): void
     {
         $storage = $this->getStorage();

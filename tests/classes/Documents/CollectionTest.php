@@ -39,8 +39,8 @@ class CollectionTest extends DocumentTest
         );
 
         $this->assertCount(2, $collection);
-        $this->assertTrue($collection->hasDocumentWithId('1'));
-        $this->assertTrue($collection->hasDocumentWithId('2'));
+        $this->assertTrue($collection->hasWithId('1'));
+        $this->assertTrue($collection->hasWithId('2'));
         $this->assertInstanceOf(Law::class, $collection->getById('1'));
         $this->assertInstanceOf(Constitution::class, $collection->getById('2'));
     }
