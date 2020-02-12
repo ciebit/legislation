@@ -19,8 +19,10 @@ use function sprintf;
 class Sql implements Database
 {
     public const COLUMN_ID = 'id';
+    public const COLUMN_DESCRIPTION = 'description';
     public const COLUMN_DOCUMENT_ID = 'document_id';
     public const COLUMN_FILE_ID = 'file_id';
+    public const COLUMN_TITLE = 'title';
 
     private PDO $pdo;
     private SqlHelper $sqlHelper;
@@ -72,6 +74,11 @@ class Sql implements Database
     private function bindValuesStoreAndUpdate(PDOStatement $statement, Attachment $attachment): self
     {
         $statement->bindValue(
+            ':description',
+            $attachment->getDescription(),
+            PDO::PARAM_STR
+        );
+        $statement->bindValue(
             ':document_id',
             $attachment->getDocumentId(),
             PDO::PARAM_INT
@@ -80,6 +87,11 @@ class Sql implements Database
             ':file_id',
             $attachment->getFileId(),
             PDO::PARAM_INT
+        );
+        $statement->bindValue(
+            ':title',
+            $attachment->getTitle(),
+            PDO::PARAM_STR
         );
 
         return $this;
@@ -90,6 +102,8 @@ class Sql implements Database
         return new Attachment(
             $data[self::COLUMN_DOCUMENT_ID],
             $data[self::COLUMN_FILE_ID],
+            $data[self::COLUMN_TITLE],
+            $data[self::COLUMN_DESCRIPTION],
             $data[self::COLUMN_ID],
         );
     }
@@ -101,6 +115,8 @@ class Sql implements Database
                 "SELECT SQL_CALC_FOUND_ROWS
                     `%s`,
                     `%s`,
+                    `%s`,
+                    `%s`,
                     `%s`
                 FROM `{$this->table}`
                 {$this->sqlHelper->generateSqlJoin()}
@@ -109,6 +125,8 @@ class Sql implements Database
                 {$this->sqlHelper->generateSqlLimit()}",
                 self::COLUMN_DOCUMENT_ID,
                 self::COLUMN_FILE_ID,
+                self::COLUMN_TITLE,
+                self::COLUMN_DESCRIPTION,
                 self::COLUMN_ID,
             )
         );
@@ -153,8 +171,10 @@ class Sql implements Database
     public function store(Attachment $attachment): string
     {
         $fields = implode('`,`', [
+            self::COLUMN_DESCRIPTION,
             self::COLUMN_DOCUMENT_ID,
             self::COLUMN_FILE_ID,
+            self::COLUMN_TITLE,
         ]);
 
         $statement = $this->pdo->prepare(
@@ -162,8 +182,10 @@ class Sql implements Database
             (`{$fields}`)
             VALUES
             (
+                :description,
                 :document_id,
-                :file_id
+                :file_id,
+                :title
             )"
         );
 

@@ -37,7 +37,7 @@
     "require": {
         "php": "^7.4",
         "myclabs/php-enum": "^1.6.2",
-        "ciebit/sql-helper": "^1.0.0"
+        "ciebit/sql-helper": "^1.0"
     },
     "require-dev": {
         "php": "^7.4",

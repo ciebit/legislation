@@ -23,6 +23,15 @@ CREATE TABLE `cb_legislation_attachment` (
     `id` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
     `document_id` INT(5) UNSIGNED NOT NULL,
     `file_id` INT(5) UNSIGNED NOT NULL,
+    `title` VARCHAR(200) NOT NULL,
+    `description` VARCHAR(500) NOT NULL,
+    PRIMARY KEY  (`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE `cb_legislation_label` ( 
+    `id` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `document_id` INT(5) UNSIGNED NOT NULL,
+    `label_id` INT(5) UNSIGNED NOT NULL,
     PRIMARY KEY  (`id`)
 ) ENGINE = InnoDB;
 

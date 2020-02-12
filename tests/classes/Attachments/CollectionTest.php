@@ -13,10 +13,10 @@ class CollectionTest extends TestCase
     public function testCreate(): void
     {
         $attachment1 = new Attachment(
-            '1', '2', '1'
+            '1', '2', 'Title 1', 'Description 1', '1'
         );
         $attachment2 = new Attachment(
-            '3', '4', '2'
+            '3', '4', 'Title 2', 'Description 3', '2'
         );
         $collection = new Collection;
         $collection->add($attachment1, $attachment2);

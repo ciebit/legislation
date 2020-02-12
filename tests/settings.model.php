@@ -7,6 +7,7 @@ return [
         'documentTableName' => 'cb_legislation_document',
         'drive' => 'mysql',
         'host' => 'localhost',
+        'labelTableName' => 'cb_legislation_label',
         'user' => 'root',
         'name' => 'cb_legislation',
         'password' => '',

@@ -8,10 +8,12 @@ use function realpath;
 
 class Database
 {
+    private string $attachmentTableName;
     private string $charset;
     private string $documentTableName;
     private string $drive;
     private string $host;
+    private string $labelTableName;
     private string $password;
     private int $port;
     private string $name;
@@ -27,6 +29,7 @@ class Database
             'documentTableName' => 'cb_legislation_document',
             'drive' => 'mysql',
             'host' => 'localhost',
+            'labelTableName' => 'cb_legislation_label',
             'name' => 'cb_legislation',
             'password' => '',
             'port' => 3306,
@@ -44,6 +47,7 @@ class Database
         $this->documentTableName = $data['documentTableName'];
         $this->drive = $data['drive'];
         $this->host = $data['host'];
+        $this->labelTableName = $data['labelTableName'];
         $this->name = $data['name'];
         $this->password = $data['password'];
         $this->port = $data['port'];
@@ -74,6 +78,11 @@ class Database
     public function getHost(): string
     {
         return $this->host;
+    }
+
+    public function getLabelTableName(): string
+    {
+        return $this->labelTableName;
     }
 
     public function getPassword(): string
