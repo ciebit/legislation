@@ -59,7 +59,7 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
         return $this->items->getIterator();
     }
 
-    public function hasDocumentWithId(string $id): bool
+    public function hasWithId(string $id): bool
     {
         foreach ($this->getIterator() as $document) {
             if ($document->getId() == $id) {
