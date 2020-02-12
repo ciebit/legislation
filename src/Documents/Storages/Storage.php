@@ -25,6 +25,8 @@ interface Storage
 
     public function addFilterByStatus(string $operator, Status ...$status): self;
 
+    public function addFilterBySearch(string ...$search): self;
+
     public function addOrderBy(string $field, string $direction): self;
 
     public function find(): Collection;

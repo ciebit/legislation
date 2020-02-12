@@ -64,6 +64,36 @@ class Sql implements Database
         return $this;
     }
 
+    public function addFilterBySearch(string ...$search): self
+    {
+        $fieldTitle = self::COLUMN_TITLE;
+        $fieldDescription = self::COLUMN_DESCRIPTION;
+        $querys = [];
+
+        if (count($search) == 0) {
+            return $this;
+        }
+
+        $i = 0;
+        foreach($search as $searchItem) {
+            $keyTitle = ':search_title_field_'. $i;
+            $keyDescription = ':search_description_field_'. $i;
+            $value = '%' . $searchItem . '%';
+
+            $querys[] = "(`{$this->table}`.`{$fieldTitle}` LIKE {$keyTitle} 
+                OR `{$this->table}`.`{$fieldDescription}` LIKE {$keyDescription})";
+
+            $this->sqlHelper->addBind($keyTitle, PDO::PARAM_STR, $value);
+            $this->sqlHelper->addBind($keyDescription, PDO::PARAM_STR, $value);
+
+            $i++;
+        }
+
+        $this->sqlHelper->addSqlFilter('(' . implode(' OR ', $querys). ')');
+
+        return $this;
+    }
+
     public function addFilterBySlug(string $operator, string ...$slug): self
     {
         $this->addFilter(self::COLUMN_SLUG, PDO::PARAM_STR, $operator, ...$slug);

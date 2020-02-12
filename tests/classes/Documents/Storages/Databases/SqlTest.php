@@ -58,6 +58,14 @@ class SqlTest extends TestCase
         $this->assertEquals('1', $collection->getArrayObject()->offsetGet(0)->getId());
     }
 
+    public function testFindBySearch(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->addFilterBySearch('Decree 234/2020')->find();
+        $this->assertCount(1, $collection);
+        $this->assertEquals('3', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
     public function testFindBySlug(): void
     {
         $storage = $this->getStorage();
