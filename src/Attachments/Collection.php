@@ -45,13 +45,14 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
      */
     public function getById(string $id): Attachment
     {
+        /** @var Attachment $attachment */
         foreach ($this->getIterator() as $attachment) {
             if ($attachment->getId() == $id) {
                 return $attachment;
             }
         }
 
-        throw new Exception('ciebit.legislation.attachment.collection.not-found-Attachment');
+        throw new Exception('ciebit.legislation.attachment.collection.not-found-attachment', 103);
     }
 
     public function getIterator(): ArrayIterator
@@ -61,6 +62,7 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
 
     public function hasWithId(string $id): bool
     {
+        /** @var Attachment $attachment */
         foreach ($this->getIterator() as $attachment) {
             if ($attachment->getId() == $id) {
                 return true;

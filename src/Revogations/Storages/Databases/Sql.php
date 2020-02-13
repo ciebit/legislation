@@ -143,7 +143,7 @@ class Sql implements Database
         );
 
         if ($statement === false) {
-            throw new Exception('ciebit.legislation.revogations.storages.database.sql.sintaxe-error', 2);
+            throw new Exception('ciebit.legislation.revogations.storages.database.sql.sintaxe-error', 300);
         }
 
         /** @var \PDOStatement $statement */
@@ -152,7 +152,7 @@ class Sql implements Database
 
         if ($statement->execute() === false) {
             error_log($statement->errorInfo()[2]);
-            throw new Exception('ciebit.legislation.revogations.storages.database.sql.find_error', 3);
+            throw new Exception('ciebit.legislation.revogations.storages.database.sql.find_error', 301);
         }
 
         $this->updateTotalItemsWithoutFilters();
@@ -203,7 +203,7 @@ class Sql implements Database
 
         if ($statement->execute() === false) {
             error_log($statement->errorInfo()[2]);
-            throw new Exception('ciebit.legislation.storages.database.sql.store_error', 1);
+            throw new Exception('ciebit.legislation.revogations.storages.database.sql.store_error', 302);
         }
 
         return $this->pdo->lastInsertId();
