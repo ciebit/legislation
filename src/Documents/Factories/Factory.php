@@ -50,7 +50,7 @@ class Factory
                 $factory = new OrdinanceFactory;
                 break;
             default:
-                throw new Exception('ciebit.legislation.documents.factories.type-not-found', 3);
+                throw new Exception('ciebit.legislation.documents.factories.type-not-found', 200);
         }
 
         if ($this->document instanceof Document) {

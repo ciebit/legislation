@@ -51,7 +51,7 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
             }
         }
 
-        throw new Exception('ciebit.legislation.collection.not-found-document');
+        throw new Exception('ciebit.legislation.documents.collection.not-found-document', 205);
     }
 
     public function getIterator(): ArrayIterator

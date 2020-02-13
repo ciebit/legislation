@@ -52,7 +52,7 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
             }
         }
 
-        throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation');
+        throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation', 303);
     }
 
     /**
@@ -67,7 +67,7 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
             }
         }
 
-        throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation');
+        throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation', 303);
     }
 
     /**
@@ -82,7 +82,7 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
             }
         }
 
-        throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation');
+        throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation', 303);
     }
 
     public function getIterator(): ArrayIterator
