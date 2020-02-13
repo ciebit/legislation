@@ -45,8 +45,39 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
      */
     public function getById(string $id): Revogation
     {
+        /** @var Revogation $revogation */
         foreach ($this->getIterator() as $revogation) {
             if ($revogation->getId() == $id) {
+                return $revogation;
+            }
+        }
+
+        throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getByRevokedDocumentId(string $id): Revogation
+    {
+        /** @var Revogation $revogation */
+        foreach ($this->getIterator() as $revogation) {
+            if ($revogation->getRevokedDocumentId() == $id) {
+                return $revogation;
+            }
+        }
+
+        throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getBySubstituteDocumentId(string $id): Revogation
+    {
+        /** @var Revogation $revogation */
+        foreach ($this->getIterator() as $revogation) {
+            if ($revogation->getSubstituteDocumentId() == $id) {
                 return $revogation;
             }
         }
@@ -59,7 +90,31 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
         return $this->items->getIterator();
     }
 
-    public function hasRevogationWithId(string $id): bool
+    public function hasRevokedWithDocumentId(string $id): bool
+    {
+        /** @var Revogation $revogation */
+        foreach ($this->getIterator() as $revogation) {
+            if ($revogation->getRevokedDocumentId() == $id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasSubstituteWithDocumentId(string $id): bool
+    {
+        /** @var Revogation $revogation */
+        foreach ($this->getIterator() as $revogation) {
+            if ($revogation->getSubstituteDocumentId() == $id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasWithId(string $id): bool
     {
         foreach ($this->getIterator() as $revogation) {
             if ($revogation->getId() == $id) {
