@@ -39,7 +39,14 @@ class SqlTest extends TestCase
     {
         $storage = $this->getStorage();
         $collection = $storage->find();
-        $this->assertCount(2, $collection);
+        $this->assertCount(4, $collection);
+    }
+
+    public function testFindByDocumentId(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->addFilterByDocumentId('=', '3')->find();
+        $this->assertCount(3, $collection);
     }
 
     public function testFindById(): void
@@ -54,16 +61,18 @@ class SqlTest extends TestCase
     {
         $storage = $this->getStorage();
         $collection = $storage->addFilterByMode('=', Mode::INTEGRAL())->find();
-        $this->assertCount(1, $collection);
-        $this->assertEquals('1', $collection->getArrayObject()->offsetGet(0)->getId());
+        $this->assertCount(2, $collection);
+        $this->assertTrue($collection->hasWithId('1'));
+        $this->assertTrue($collection->hasWithId('4'));
     }
 
     public function testFindByRevokedDocumentId(): void
     {
         $storage = $this->getStorage();
         $collection = $storage->addFilterByRevokedDocumentId('=', '3')->find();
-        $this->assertCount(1, $collection);
-        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
+        $this->assertCount(2, $collection);
+        $this->assertTrue($collection->hasWithId('2'));
+        $this->assertTrue($collection->hasWithId('3'));
     }
 
     public function testFindBySubstituteDocumentId(): void
@@ -78,7 +87,8 @@ class SqlTest extends TestCase
     {
         $storage = $this->getStorage();
         $collection = $storage->addOrderBy(Storage::FIELD_SUBSTITUTE_DOCUMENT_ID, 'DESC')->find();
-        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
+        $revogation = $collection->getArrayObject()->offsetGet(0);
+        $this->assertEquals('5', $revogation->getSubstituteDocumentId());
     }
 
     public function testStore(): void
