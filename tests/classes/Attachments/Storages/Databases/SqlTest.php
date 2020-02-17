@@ -34,6 +34,17 @@ class SqlTest extends TestCase
         $this->restoreDefaultDatabaseState();
     }
 
+    public function testClone(): void
+    {
+        $storage = $this->getStorage();
+        $storageClone = clone $storage;
+        $storageClone->addFilterById('=', '1');
+        $storage->addFilterById('=', '2');
+        $collection = $storage->find();
+        $this->assertCount(1, $collection);
+        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
     public function testFind(): void
     {
         $storage = $this->getStorage();
