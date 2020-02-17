@@ -55,6 +55,37 @@ class Collection implements Countable, IteratorAggregate, JsonSerializable
         throw new Exception('ciebit.legislation.revogations.collection.not-found-revogation', 303);
     }
 
+    public function getAllByRevokedDocumentId(string $id): Collection
+    {
+        $collection = new Collection();
+
+        /** @var Revogation $revogation */
+        foreach ($this->getIterator() as $revogation) {
+            if ($revogation->getRevokedDocumentId() == $id) {
+                $collection->add($revogation);
+            }
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAllBySubstituteDocumentId(string $id): Collection
+    {
+        $collection = new Collection;
+
+        /** @var Revogation $revogation */
+        foreach ($this->getIterator() as $revogation) {
+            if ($revogation->getSubstituteDocumentId() == $id) {
+                $collection->add($revogation);
+            }
+        }
+
+        return $collection;
+    }
+
     /**
      * @throws Exception
      */

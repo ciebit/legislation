@@ -16,6 +16,8 @@ interface Storage
     public const FIELD_REVOKED_DOCUMENT_ID = 'revoked_document_id';
     public const FIELD_SUBSTITUTE_DOCUMENT_ID = 'substitute_document_id';
 
+    public function addFilterByDocumentId(string $operator, string ...$id): self;
+
     public function addFilterById(string $operator, string ...$id): self;
 
     public function addFilterByMode(string $operator, Mode ...$mode): self;

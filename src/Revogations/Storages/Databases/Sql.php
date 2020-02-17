@@ -45,6 +45,29 @@ class Sql implements Database
         return $this;
     }
 
+    public function addFilterByDocumentId(string $operator, string ...$ids): self
+    {
+        $ids = array_map('intval', $ids);
+        $keys = [];
+
+        for($i = 0; $i < count($ids); $i++) {
+            $key = ':document_id_' . $i;
+            $keys[] = $key;
+            $this->sqlHelper->addBind($key, PDO::PARAM_INT, $ids[0]);
+        }
+        
+        $columnRevoked = self::COLUMN_REVOKED_DOCUMENT_ID;
+        $columnSubstitute = self::COLUMN_SUBSTITUTE_DOCUMENT_ID;
+        $idsQuery = implode(',', $keys);
+
+        $this->sqlHelper->addSqlFilter(
+            "(`{$this->table}`.`{$columnSubstitute}` IN ({$idsQuery}) 
+            OR `{$this->table}`.`{$columnRevoked}` IN ({$idsQuery}))"
+        );
+        
+        return $this;
+    }
+
     public function addFilterById(string $operator, string ...$ids): self
     {
         $ids = array_map('intval', $ids);

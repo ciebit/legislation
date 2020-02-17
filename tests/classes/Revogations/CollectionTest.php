@@ -42,4 +42,30 @@ class CollectionTest extends TestCase
         $this->assertEquals($revolgation1, $collection->getBySubstituteDocumentId('12'));
         $this->assertEquals($revolgation2, $collection->getBySubstituteDocumentId('14'));
     }
+
+    public function testGetAll(): void
+    {
+        $revolgation1 = new Revogation(
+            '11', '12', Mode::INTEGRAL(), 'Description 1', '1'
+        );
+        $revolgation2 = new Revogation(
+            '13', '14', Mode::PARTIAL(), 'Description 2', '2'
+        );
+        $revolgation3 = new Revogation(
+            '11', '15', Mode::INTEGRAL(), 'Description 3', '3'
+        );
+        $revolgation4 = new Revogation(
+            '16', '14', Mode::PARTIAL(), 'Description 4', '4'
+        );
+        $collection = new Collection;
+        $collection->add($revolgation1, $revolgation2, $revolgation3, $revolgation4);
+
+        $revokedCollection = $collection->getAllByRevokedDocumentId('11');
+        $this->assertCount(2, $revokedCollection);
+        $this->assertEquals([$revolgation1, $revolgation3], $revokedCollection->getArrayObject()->getArrayCopy());
+
+        $substituteCollection = $collection->getAllBySubstituteDocumentId('14');
+        $this->assertCount(2, $substituteCollection);
+        $this->assertEquals([$revolgation2, $revolgation4], $substituteCollection->getArrayObject()->getArrayCopy());
+    }
 }
